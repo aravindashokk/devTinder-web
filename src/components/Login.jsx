@@ -23,8 +23,7 @@ const Login = () => {
       }, { withCredentials: true });
       dispatch(addUser(res.data));
       navigate("/");
-    }
-    catch (error) {
+    } catch (error) {
       setError(error?.response?.data || "Something went wrong");
       console.error('Error logging in:', error);
     }
@@ -40,13 +39,17 @@ const Login = () => {
       }, { withCredentials: true });
       dispatch(addUser(res.data.data));
       navigate("/profile");
-    }
-    catch (error) {
+    } catch (error) {
       setError(error?.response?.data || "Something went wrong");
       console.error('Error signing up:', error);
     }
-  }
+  };
 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    isLoginForm ? handleLogin() : handleSignUp();
+  };
 
   return (
     <div className="flex justify-center my-10">
@@ -54,63 +57,74 @@ const Login = () => {
         <div className="card-body">
           <h2 className="card-title justify-center">{isLoginForm ? "Login" : "Sign Up"}</h2>
 
-          {!isLoginForm && <><label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text m-2">First Name</span>
-            </div>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="input input-bordered w-full max-w-xs"
-            />
-          </label>
+          <form onSubmit={handleSubmit}>
+            {!isLoginForm && (
+              <>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text m-2">First Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                </label>
+
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text m-2">Last Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                </label>
+              </>
+            )}
 
             <label className="form-control w-full max-w-xs">
               <div className="label">
-                <span className="label-text m-2">Last Name</span>
+                <span className="label-text m-2">Email ID</span>
               </div>
               <input
                 type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={emailId}
+                onChange={(e) => setEmailId(e.target.value)}
                 className="input input-bordered w-full max-w-xs"
               />
-            </label></>}
+            </label>
 
+            <label className="form-control w-full max-w-xs mt-4">
+              <div className="label">
+                <span className="label-text m-2">Password</span>
+              </div>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input input-bordered w-full max-w-xs"
+              />
+            </label>
 
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text m-2">Email ID</span>
+            <p className='text-red-500'>{error}</p>
+
+            <p
+              className='m-auto mt-2 cursor-pointer'
+              onClick={() => setIsLoginForm(value => !value)}
+            >
+              {isLoginForm ? 'New User? Sign Up Now' : 'Existing User? Login here'}
+            </p>
+
+            <div className="card-actions justify-center mt-4">
+              <button type="submit" className="btn btn-primary">
+                {isLoginForm ? 'Login' : 'Sign Up'}
+              </button>
             </div>
-            <input
-              type="text"
-              value={emailId}
-              onChange={(e) => setEmailId(e.target.value)}
-              className="input input-bordered w-full max-w-xs"
-            />
-          </label>
-
-
-          <label className="form-control w-full max-w-xs mt-4">
-            <div className="label">
-              <span className="label-text m-2">Password</span>
-            </div>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input input-bordered w-full max-w-xs"
-            />
-          </label>
-          <p className='text-red-500'>{error}</p>
-
-          <p className='m-auto cursor-pointer' onClick={() => setIsLoginForm(value => !value)}>{isLoginForm ? 'New User? Sign Up Now' : 'Existing User? Login here'}</p>
-          <div className="card-actions justify-center mt-4">
-            <button className="btn btn-primary" onClick={isLoginForm ? handleLogin : handleSignUp}>{isLoginForm ? 'Login' : 'Sign Up'}</button>
-          </div>
-
-
+          </form>
         </div>
       </div>
     </div>
