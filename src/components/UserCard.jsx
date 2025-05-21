@@ -20,7 +20,7 @@ const UserCard = ({ user }) => {
         }
     }
 
-    console.log(user);
+    
     return (
         <div>
             <div className="card bg-base-300 w-96 shadow-sm">

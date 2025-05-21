@@ -23,7 +23,6 @@ const Body = () => {
         }
         catch (err) {
             if (err.response.status === 401) {
-                alert("Session expired. Please login again.");
                 Navigate('/login');
             }
             console.error('Error :', err);
